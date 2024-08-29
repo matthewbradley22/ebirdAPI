@@ -5,7 +5,8 @@ const stateCode = document.getElementById("state");
 const main = document.getElementById("main")
 const content = document.getElementById("content")
 let userChoice = document.getElementById("typeFilter");
-
+let currentLat = "";
+let currentLong = "";
 
 //intermediate function that I will change to change page state
 userChoice.addEventListener("change", (event) => {
@@ -14,6 +15,7 @@ userChoice.addEventListener("change", (event) => {
     let newMap = document.createElement("div");
     newMap.setAttribute("id", "map");
     content.appendChild(newMap)
+    
     //create map object for user to select lat/long 
     let map = L.map('map').setView([30.6, -96], 13);
 
@@ -27,12 +29,10 @@ userChoice.addEventListener("change", (event) => {
     }).addTo(map);
 
     function onMapClick(e) {
-      popup
-        .setLatLng(e.latlng)
-        .setContent("You clicked the map at " + e.latlng.toString())
-        .openOn(map);
+      currentLat = e.latlng.lat.toString()
+      currentLong = e.latlng.lng.toString()
     }
-    
+
   } else if (event.target.value === "stateCode") {
     content.innerHTML = ""
     let choice = document.createElement("div");
