@@ -19,9 +19,17 @@
 
 <body>
     <header>
-        <h1>API Practice with birds</h1>
+        <h1>Bird tracker</h1>
+        <h2>See interesting bird events in locations around the world</h2>
     </header>
     <main id="main">
+        <section id="methodChoice">
+            <select name="typeFilter" id="typeFilter">
+                <option value="">---choose an option---</option>
+                <option value="State Code">State Code</option>
+                <option value="map">Map</option>
+            </select>
+        </section>
         <div id="input">
             <label for="state">State code:</label>
             <input type="text" id="state" name="state"><br><br>
