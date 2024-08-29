@@ -15,22 +15,29 @@ userChoice.addEventListener("change", (event) => {
     let newMap = document.createElement("div");
     newMap.setAttribute("id", "map");
     content.appendChild(newMap)
-    
-    //create map object for user to select lat/long 
-    let map = L.map('map').setView([30.6, -96], 13);
 
-    //Create click function that I will change later to pass to ebird api
+    //create map object for user to select lat/long 
+    let map = L.map('map').setView([30.6, -96], 8);
     let popup = L.popup()
-    map.on('click', onMapClick);
 
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
 
+    let submitMap = document.createElement("button");
+    submitMap.setAttribute("id", "submitMap");
+    submitMap.innerHTML = "Submit coordinates";
+    content.appendChild(submitMap);
+
+    map.on('click', onMapClick);
+
     function onMapClick(e) {
       currentLat = e.latlng.lat.toString()
       currentLong = e.latlng.lng.toString()
+      popup.setLatLng(e.latlng)
+        .setContent(`lat: ${currentLat}, long: ${currentLong}`)
+        .openOn(map);
     }
 
   } else if (event.target.value === "stateCode") {
