@@ -1,22 +1,71 @@
 
 //Get values from html page such as user chosen state or type of 
 //filtering they wish to use
-const stateSubmit = document.getElementById("submit");
 const stateCode = document.getElementById("state");
-const warning = document.getElementById("wrong");
+const main = document.getElementById("main")
+const content = document.getElementById("content")
 let userChoice = document.getElementById("typeFilter");
 
-//create map object for user to select lat/long 
-let map = L.map('map').setView([30.6, -96], 13);
 
-//Create click function that I will change later to pass to ebird api
-let popup = L.popup()
-map.on('click', onMapClick);
+//intermediate function that I will change to change page state
+userChoice.addEventListener("change", (event) => {
+  if (event.target.value == "map") {
+    content.innerHTML = ""
+    let newMap = document.createElement("div");
+    newMap.setAttribute("id", "map");
+    content.appendChild(newMap)
+    //create map object for user to select lat/long 
+    let map = L.map('map').setView([30.6, -96], 13);
 
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  maxZoom: 19,
-  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
+    //Create click function that I will change later to pass to ebird api
+    let popup = L.popup()
+    map.on('click', onMapClick);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    function onMapClick(e) {
+      popup
+        .setLatLng(e.latlng)
+        .setContent("You clicked the map at " + e.latlng.toString())
+        .openOn(map);
+    }
+    
+  } else if (event.target.value === "stateCode") {
+    content.innerHTML = ""
+    let choice = document.createElement("div");
+    choice.setAttribute("id", "input");
+    content.appendChild(choice)
+    let choiceLabel = document.createElement("label");
+    choiceLabel.setAttribute("for", "state");
+    choiceLabel.innerHTML = "State code:"
+    choice.appendChild(choiceLabel)
+    let textInput = document.createElement("input");
+    textInput.setAttribute("type", "text");
+    textInput.setAttribute("id", "state");
+    textInput.setAttribute("name", "state");
+    choice.appendChild(textInput)
+    let submitButton = document.createElement("button");
+    submitButton.setAttribute("type", "button");
+    submitButton.setAttribute("id", "submit");
+    submitButton.innerHTML = "Submit"
+    choice.appendChild(submitButton)
+    let wrong = document.createElement("p");
+    wrong.setAttribute("id", "wrong");
+    choice.appendChild(wrong);
+    let indNames = document.createElement("ul")
+    indNames.setAttribute("id", "indNames")
+    choice.appendChild(indNames)
+    const stateSubmit = document.getElementById("submit");
+    stateSubmit.addEventListener("click", function () {
+      const regionString = "US-" + state.value.toUpperCase()
+      getBirdDat(regionString)
+    })
+  }
+})
+
 
 //Interact with ebird api
 var myHeaders = new Headers();
@@ -28,12 +77,6 @@ var requestOptions = {
   redirect: 'follow'
 };
 
-//intermediate function that I will change to change page state
-userChoice.addEventListener("change", (event) =>{
-  console.log(event.target.value)
-})
-
-
 async function getBirdDat(location) {
   try {
     const url = "https://api.ebird.org/v2/data/obs/" + location + "/recent"
@@ -42,9 +85,9 @@ async function getBirdDat(location) {
       throw new Error(`HTTP error: ${response.status}`);
     }
     const data = await response.json()
-    if(Object.keys(data).length === 0){
+    if (Object.keys(data).length === 0) {
       wrong.innerHTML = "No such place"
-    }else{
+    } else {
       wrong.innerHTML = ""
     }
     showNames(data)
@@ -69,14 +112,3 @@ function showNames(recentBirds) {
 
 }
 
-stateSubmit.addEventListener("click", function () {
-  const regionString = "US-" + stateCode.value.toUpperCase()
-  getBirdDat(regionString)
-})
-
-function onMapClick(e) {
-  popup
-      .setLatLng(e.latlng)
-      .setContent("You clicked the map at " + e.latlng.toString())
-      .openOn(map);
-}
