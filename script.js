@@ -2,6 +2,12 @@
 const stateSubmit = document.getElementById("submit")
 const stateCode = document.getElementById("state")
 const warning = document.getElementById("wrong")
+let map = L.map('map').setView([30.6, -96], 13);
+
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  maxZoom: 19,
+  attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
 
 var myHeaders = new Headers();
 myHeaders.append("X-eBirdApiToken", "q7m6fj472qht");
