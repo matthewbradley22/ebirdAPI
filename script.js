@@ -5,8 +5,22 @@ const stateCode = document.getElementById("state");
 const main = document.getElementById("main")
 const content = document.getElementById("content")
 let userChoice = document.getElementById("typeFilter");
+let infoButton = document.getElementById("infoButton");
+let info = document.getElementById("info");
 let currentLat = "";
 let currentLong = "";
+
+//Show site info
+infoButton.addEventListener("click", (e) => {
+  if (e.currentTarget.innerHTML === "Hide info") {
+    e.currentTarget.innerHTML = "Show info"
+    info.innerHTML = ""
+  } else {
+    e.currentTarget.innerHTML = "Hide info"
+    info.innerHTML = "This site allows users to..."
+  }
+
+})
 
 //intermediate function that I will change to change page state
 userChoice.addEventListener("change", (event) => {
