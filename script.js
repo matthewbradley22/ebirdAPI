@@ -17,7 +17,11 @@ infoButton.addEventListener("click", (e) => {
     info.innerHTML = ""
   } else {
     e.currentTarget.innerHTML = "Hide info"
-    info.innerHTML = "This site allows users to..."
+    info.innerHTML = "This site leverages the ebird API, " +
+    "allowing users to view recent bird sightings by location. Users "+
+    "can either see recent observations in a specific state, by entering a two letter "+
+    "US state code, or by choosing a point on a map. The map is implemented "+
+    "via the leafletjs library."
   }
 
 })
@@ -146,11 +150,11 @@ function showNames(recentBirds) {
   indNames.innerHTML = ""
   for (let i = 0; i < recentBirds.length; i++) {
     let li = document.createElement("li");
-    li.appendChild(document.createTextNode(`${i}: `));
+    li.appendChild(document.createTextNode(`${i+1}: `));
     bold = document.createElement('strong');
     bold.appendChild(document.createTextNode(`${recentBirds[i].comName}`));
     li.appendChild(bold)
-    li.appendChild(document.createTextNode(` at ${recentBirds[i].obsDt}`));
+    li.appendChild(document.createTextNode(`. ${recentBirds[i].obsDt}`));
     indNames.appendChild(li);
   }
 
