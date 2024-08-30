@@ -40,6 +40,26 @@ userChoice.addEventListener("change", (event) => {
         .openOn(map);
     }
 
+    submitMap.addEventListener("click", () => {
+      if (currentLat === "") {
+        let noCoords = document.createElement("p");
+        noCoords.setAttribute("id", "noCoords");
+        noCoords.innerHTML = "No coordinates selected";
+        content.appendChild(noCoords);
+      } else {
+        if (document.getElementById("noCoords")) {
+          content.removeChild(noCoords);
+        }
+        let wrong = document.createElement("p");
+        wrong.setAttribute("id", "wrong");
+        content.appendChild(wrong);
+        let indNames = document.createElement("ul")
+        indNames.setAttribute("id", "indNames")
+        content.appendChild(indNames);
+        getBirdDatCoords(currentLat, currentLong)
+      }
+    })
+
   } else if (event.target.value === "stateCode") {
     content.innerHTML = ""
     let choice = document.createElement("div");
@@ -119,3 +139,22 @@ function showNames(recentBirds) {
 
 }
 
+async function getBirdDatCoords(lat, long) {
+  try {
+    const url = `https://api.ebird.org/v2/data/obs/geo/recent?lat=` + lat + `&lng=` + long;
+    const response = await fetch(url, requestOptions)
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    const data = await response.json()
+    if (Object.keys(data).length === 0) {
+      wrong.innerHTML = "No such place"
+    } else {
+      wrong.innerHTML = ""
+    }
+    showNames(data)
+  }
+  catch (error) {
+    console.error(`Could not get products: ${error}`);
+  }
+}
