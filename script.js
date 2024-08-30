@@ -17,11 +17,12 @@ infoButton.addEventListener("click", (e) => {
     info.innerHTML = ""
   } else {
     e.currentTarget.innerHTML = "Hide info"
-    info.innerHTML = "This site leverages the ebird API, " +
+    info.innerHTML = "This site leverages the eBird API, " +
     "allowing users to view recent bird sightings by location. Users "+
-    "can either see recent observations in a specific state, by entering a two letter "+
-    "US state code, or by choosing a point on a map. The map is implemented "+
-    "via the leafletjs library."
+    "can  see recent observations in a specific state, by entering a two letter "+
+    "US state code. Alternatively, users can choose a point on a map and see "+
+    "recent observations within 25 km of that point. " +
+    "The map is implemented via the leafletjs library."
   }
 
 })
