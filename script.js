@@ -109,18 +109,21 @@ userChoice.addEventListener("change", (event) => {
 
 
 //Interact with ebird api
-var myHeaders = new Headers();
+let myHeaders = new Headers();
 myHeaders.append("X-eBirdApiToken", "q7m6fj472qht");
 
-var requestOptions = {
+let requestOptions = {
   method: 'GET',
   headers: myHeaders,
-  redirect: 'follow'
+  redirect: 'follow',
+  maxResults: "100"
 };
 
 async function getBirdDat(location) {
   try {
-    const url = "https://api.ebird.org/v2/data/obs/" + location + "/recent"
+    const url = "https://api.ebird.org/v2/data/obs/" + location +
+      "/recent" +
+      "?maxResults=100"
     const response = await fetch(url, requestOptions)
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
@@ -155,7 +158,8 @@ function showNames(recentBirds) {
 
 async function getBirdDatCoords(lat, long) {
   try {
-    const url = `https://api.ebird.org/v2/data/obs/geo/recent?lat=` + lat + `&lng=` + long;
+    const url = `https://api.ebird.org/v2/data/obs/geo/recent?lat=` +
+      lat + `&lng=` + long
     const response = await fetch(url, requestOptions)
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);

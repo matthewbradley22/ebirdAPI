@@ -12,3 +12,11 @@ body{
     border: 1px solid;
 }
 
+li{
+    border: 1px solid;
+    border-radius: 25%;
+    padding: 10px;
+    background-color: #bbd5d2;
+    list-style: none;
+    
+}
